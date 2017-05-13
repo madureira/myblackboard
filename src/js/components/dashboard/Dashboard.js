@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
+import Board                from './Board';
 
 class Dashboard extends Component {
 
   render() {
     return (
       <div>
-        <section id='content'>
-          teste
+        <section id='app-content'>
+          <Board/>
         </section>
-        <div className='board-background'></div>
       </div>
     )
   }
