@@ -1,5 +1,13 @@
 .board {
-  position: relative;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  overflow: hidden;
+  cursor: crosshair;
+
   background-image: url(../images/texture.jpg);
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -7,12 +15,11 @@
   -o-background-size: 100% 100%;
   -khtml-background-size: 100% 100%;
   -moz-background-size: 100% 100%;
-  height: 100%;
-  width: 100%;
 
   #canvas {
-    height: calc(~"100% - 3px");
-    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
 }
