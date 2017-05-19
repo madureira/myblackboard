@@ -180,7 +180,7 @@ gulp.task('packager', ['packager:generate'], function() {
 
 gulp.task('packer', ['generate:packer-files', 'copy:packer-files'], function() {
   return gulp.src('./**/**')
-    .pipe(exec('electron-packager ./dist blackboard --platform=win32 --arch=all', {
+    .pipe(exec('electron-packager ./dist blackboard --platform=linux --arch=all', {
       continueOnError: false, // default = false, true means don't emit error event
       pipeStdout: false, // default = false, true means stdout is written to file.contents
       customTemplatingThing: "test" // content passed to gutil.template()

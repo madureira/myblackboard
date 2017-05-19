@@ -10,7 +10,7 @@
     "start": "node_modules/.bin/electron .",
     "watch": "npm run build && node node_modules/gulp/bin/gulp.js watch",
     "build": "node node_modules/gulp/bin/gulp.js build",
-    "packager": "npm run build && node node_modules/gulp/bin/gulp.js packager && electron-packager ./packager gameengine --platform=win32 --arch=all"
+    "packager": "npm run build && node node_modules/gulp/bin/gulp.js packager && electron-packager ./packager blackboard --platform=linux --arch=all"
   },
   "dependencies": {
     "classnames": "^2.2.5",
@@ -30,6 +30,7 @@
     "babel-preset-react": "6.24.1",
     "babelify": "7.3.0",
     "browserify": "^14.3.0",
+    "electron-packager": "^8.7.0",
     "electron-prebuilt": "^1.4.13",
     "gulp": "3.9.1",
     "gulp-clean": "^0.3.2",
