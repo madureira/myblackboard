@@ -82,11 +82,16 @@ class Board extends Component {
   	}, false);
 
   	canvas.addEventListener('mousedown', (e) => {
-  		canvas.addEventListener('mousemove', onPaint, false);
+      if (e.button === 0) {
+        this.props.hideMenu();
+  		  canvas.addEventListener('mousemove', onPaint, false);
+      }
   	}, false);
 
-  	canvas.addEventListener('mouseup', () => {
-  		canvas.removeEventListener('mousemove', onPaint, false);
+  	canvas.addEventListener('mouseup', (e) => {
+      if (e.button === 0) {
+  		  canvas.removeEventListener('mousemove', onPaint, false);
+      }
   	}, false);
 
   	let onPaint = () => {
