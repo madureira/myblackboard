@@ -10,21 +10,46 @@ class Board extends Component {
     this.lineJoin = 'round';
     this.lineCap = 'round';
     this.strokeStyle = '#fff';
+    this.mode = 'brush';
+    this.keyBrush = 'b';
+    this.keyEraser = 'e';
+    this.keyIncreaseBrush = '+';
+    this.keyDecreaseBrush = '-';
   }
 
   componentDidMount() {
-    let _this = this;
-
     this.createInMemoryCanvas();
-
     let canvas = document.getElementById('canvas');
-    let ctx = canvas.getContext('2d');
-
-    this.onResizeBoard(canvas, ctx);
+    let ctx    = canvas.getContext('2d');
 
     window.addEventListener('resize', () => {
-      _this.onResizeBoard(canvas, ctx);
+      this.onResizeBoard(canvas, ctx);
     }, false);
+
+    this.onResizeBoard(canvas, ctx);
+    this.keyboardEvents(ctx);
+  }
+
+  keyboardEvents(ctx) {
+    document.onkeypress = (evt) => {
+      evt = evt || window.event;
+      let charCode = evt.keyCode || evt.which;
+      let charStr = String.fromCharCode(charCode);
+
+      if (charStr === this.keyBrush) {
+        this.mode = 'brush';
+      } else if (charStr === this.keyEraser) {
+        this.mode = 'eraser';
+      } else if (charStr === this.keyIncreaseBrush) {
+        this.lineWidth += 2;
+        this.updateBrush(this.inMemCtx);
+        this.updateBrush(ctx);
+      } else if (charStr === this.keyDecreaseBrush) {
+        this.lineWidth -= 2;
+        this.updateBrush(this.inMemCtx);
+        this.updateBrush(ctx);
+      }
+    };
   }
 
   createInMemoryCanvas() {
@@ -33,33 +58,28 @@ class Board extends Component {
     this.inMemCanvas = document.createElement('canvas');
     this.inMemCanvas.width  = width;
     this.inMemCanvas.height = height;
-
     this.inMemCtx = this.inMemCanvas.getContext('2d');
+
     this.updateBrush(this.inMemCtx);
   }
 
   onResizeBoard(canvas, ctx) {
     let { width, height } = this.getScreenSize();
 
-    //this.inMemCtx.drawImage(canvas, 0, 0);
     canvas.width = width;
     canvas.height = height;
     ctx.drawImage(this.inMemCanvas, 0, 0);
+    this.updateBrush(ctx);
 
     let mouse = {x: 0, y: 0};
   	let lastMouse = {x: 0, y: 0};
 
-    this.updateBrush(ctx);
-
-  	/* Mouse Capturing Work */
   	canvas.addEventListener('mousemove', function(e) {
-      var self = this;
   		lastMouse.x = mouse.x;
   		lastMouse.y = mouse.y;
-
-  		mouse.x = e.pageX - self.offsetLeft;
-  		mouse.y = e.pageY - self.offsetTop;
-  	}, this);
+  		mouse.x = e.pageX - this.offsetLeft;
+  		mouse.y = e.pageY - this.offsetTop;
+  	}, false);
 
   	canvas.addEventListener('mousedown', (e) => {
   		canvas.addEventListener('mousemove', onPaint, false);
@@ -70,29 +90,46 @@ class Board extends Component {
   	}, false);
 
   	let onPaint = () => {
-  		ctx.beginPath();
-  		ctx.moveTo(lastMouse.x, lastMouse.y);
-  		ctx.lineTo(mouse.x, mouse.y);
-  		ctx.closePath();
-  		ctx.stroke();
+      this.draw(ctx, lastMouse, mouse);
+  	};
+  }
 
-      this.inMemCtx.beginPath();
+  draw(ctx, lastMouse, mouse) {
+    ctx.beginPath();
+    this.inMemCtx.beginPath();
+    if (this.mode === 'brush') {
+      ctx.globalCompositeOperation='source-over';
+      ctx.moveTo(lastMouse.x, lastMouse.y);
+      ctx.lineTo(mouse.x, mouse.y);
+
+      this.inMemCtx.globalCompositeOperation='source-over';
       this.inMemCtx.moveTo(lastMouse.x, lastMouse.y);
       this.inMemCtx.lineTo(mouse.x, mouse.y);
-      this.inMemCtx.closePath();
-      this.inMemCtx.stroke();
-  	};
+    } else if (this.mode === 'eraser') {
+      ctx.globalCompositeOperation='destination-out';
+      ctx.moveTo(lastMouse.x, lastMouse.y);
+      ctx.lineTo(mouse.x, mouse.y);
+
+      this.inMemCtx.globalCompositeOperation='destination-out';
+      this.inMemCtx.moveTo(lastMouse.x, lastMouse.y);
+      this.inMemCtx.lineTo(mouse.x, mouse.y);
+    }
+    ctx.closePath();
+    ctx.stroke();
+    this.inMemCtx.closePath();
+    this.inMemCtx.stroke();
   }
 
   getScreenSize() {
     let sketch_style = window.getComputedStyle(document.querySelector('.board'));
-    let w = parseInt(sketch_style.getPropertyValue('width'));
-    let h = parseInt(sketch_style.getPropertyValue('height'));
-    return { width: w, height: h };
+    return {
+      width: parseInt(sketch_style.getPropertyValue('width')),
+      height: parseInt(sketch_style.getPropertyValue('height'))
+    };
   }
 
   updateBrush(context) {
-    context.lineWidth   = this.lineWidth;
+    context.lineWidth   = (this.lineWidth > 1 ? this.lineWidth : 1);
     context.lineJoin    = this.lineJoin;
     context.lineCap     = this.lineCap;
     context.strokeStyle = this.strokeStyle;
