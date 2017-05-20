@@ -10,11 +10,17 @@ class Board extends Component {
     this.lineJoin = 'round';
     this.lineCap = 'round';
     this.strokeStyle = '#fff';
-    this.mode = 'brush';
     this.keyBrush = 'b';
     this.keyEraser = 'e';
     this.keyIncreaseBrush = '+';
     this.keyDecreaseBrush = '-';
+    this.state = {
+      currentTool: this.props.currentTool
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ currentTool: nextProps.currentTool });
   }
 
   componentDidMount() {
@@ -36,11 +42,7 @@ class Board extends Component {
       let charCode = evt.keyCode || evt.which;
       let charStr = String.fromCharCode(charCode);
 
-      if (charStr === this.keyBrush) {
-        this.mode = 'brush';
-      } else if (charStr === this.keyEraser) {
-        this.mode = 'eraser';
-      } else if (charStr === this.keyIncreaseBrush) {
+      if (charStr === this.keyIncreaseBrush) {
         this.lineWidth += 2;
         this.updateBrush(this.inMemCtx);
         this.updateBrush(ctx);
@@ -102,7 +104,7 @@ class Board extends Component {
   draw(ctx, lastMouse, mouse) {
     ctx.beginPath();
     this.inMemCtx.beginPath();
-    if (this.mode === 'brush') {
+    if (this.state.currentTool === 'brush') {
       ctx.globalCompositeOperation='source-over';
       ctx.moveTo(lastMouse.x, lastMouse.y);
       ctx.lineTo(mouse.x, mouse.y);
@@ -110,7 +112,7 @@ class Board extends Component {
       this.inMemCtx.globalCompositeOperation='source-over';
       this.inMemCtx.moveTo(lastMouse.x, lastMouse.y);
       this.inMemCtx.lineTo(mouse.x, mouse.y);
-    } else if (this.mode === 'eraser') {
+    } else if (this.state.currentTool === 'eraser') {
       ctx.globalCompositeOperation='destination-out';
       ctx.moveTo(lastMouse.x, lastMouse.y);
       ctx.lineTo(mouse.x, mouse.y);

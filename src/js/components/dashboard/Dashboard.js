@@ -8,11 +8,12 @@ class Dashboard extends Component {
     super(props);
     this.mouse = { x: 0, y: 0 };
     this.state = {
+      currentTool: 'brush',
       menu: {
         show: false,
         x: 0,
         y: 0
-      }
+      },
     };
   }
 
@@ -25,26 +26,35 @@ class Dashboard extends Component {
     }, false);
 
     window.oncontextmenu = () => {
-      this.setState({
-        menu: {
-          show: true,
-          x: _this.mouse.x,
-          y: _this.mouse.y
-        }
-      });
+      if (_this.state.menu.show) {
+        _this.hideMenu();
+        setTimeout(() => { _this.showMenu(); }, 200);
+      } else {
+        _this.showMenu();
+      }
       return false;
     };
   }
 
+  showMenu() {
+    this.setState({ menu: { show: true, x: this.mouse.x, y: this.mouse.y } });
+  }
+
   hideMenu() {
-    this.setState({ menu: { show: false, x: 0, y: 0 } });
+    let menu = this.state.menu;
+    this.setState({ menu: { show: false, x: menu.x, y: menu.y } });
+  }
+
+  handleSelectOption(option) {
+    let menu = this.state.menu;
+    this.setState({ currentTool: option, menu: { show: false, x: menu.x, y: menu.y } });
   }
 
   render() {
     return (
       <section id='app-content'>
-        <Board hideMenu={ this.hideMenu.bind(this) } />
-        <Menu { ...this.state.menu }/>
+        <Board hideMenu={ this.hideMenu.bind(this) } currentTool={ this.state.currentTool }/>
+        <Menu { ...this.state.menu } selectTool={ this.handleSelectOption.bind(this) }/>
       </section>
     )
   }

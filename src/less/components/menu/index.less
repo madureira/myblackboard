@@ -1,4 +1,15 @@
+@import 'https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css';
+
+.menu-open {
+  visibility: visible !important;
+  opacity: 1 !important;
+  transition: opacity 0.3s, visibility 0.3s !important;
+}
+
 .menu {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s, visibility 0.3s;
   position: absolute;
   z-index: 2;
   top: 15px;
@@ -8,19 +19,100 @@
   border-radius: 50%;
   background: #454545;
   color: #fff;
-  cursor: pointer;
 
   -webkit-box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.3);
   -moz-box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.3);
   box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.3);
 
   .menu-board {
+    background: #676767;
+    margin: 5px auto;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 190px;
+    height: 190px;
+  }
+
+  .main-menu {
     position: relative;
-    top: 5px;
-    left: 5px;
     width: 190px;
     height: 190px;
     border-radius: 50%;
-    background: #676767;
+    overflow: hidden;
   }
+
+  .main-menu li {
+    height: 95px;
+    line-height: 105px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #40403F;
+
+      span {
+        color: #989999;
+      }
+
+      span:active {
+        color: #fff;
+      }
+    }
+  }
+
+  .main-menu li:nth-child(1) {
+    width: 94px;
+    border-right: 1px solid #2b2a2b;
+    border-bottom: 1px solid #2b2a2b;
+  }
+
+  .main-menu li:nth-child(2) {
+    width: 95px;
+    border-bottom: 1px solid #2b2a2b;
+  }
+
+  .main-menu li:nth-child(3) {
+    width: 94px;
+    border-right: 1px solid #2b2a2b;
+  }
+
+  .main-menu li:nth-child(4) {
+    width: 95px;
+  }
+
+  .main-menu li span {
+    color: #40403f;
+    height: 100%;
+    width: 100%;
+    display: inline-block;
+  }
+
+  .menu-center {
+    position: absolute;
+    top: 62px;
+    left: 62px;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background: rgba(43,42,43, 0.9);
+
+    -webkit-box-shadow: 0 0 20px 0px #a0a0a0;
+    -moz-box-shadow: 0 0 20px 0px #a0a0a0;
+    box-shadow: 0 0 20px 0px #a0a0a0;
+
+    .menu-logo {
+      position: relative;
+      margin: 12px auto;
+      width: 51px;
+      height: 51px;
+      background: #F2DB4E;
+      border-radius: 50%;
+      color: #fff;
+      text-align: center;
+      line-height: 50px;
+      font-size: 30px;
+    }
+  }
+
 }
