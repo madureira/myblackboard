@@ -51,7 +51,7 @@ class Menu extends Component {
 
     if (tool === 'brush' || tool === 'eraser') {
       return (
-        <div className='menu-circle'>
+        <div className={ 'menu-circle' + (this.state.tool === 'brush' ? ' flip-circle' : '') }>
           <div className='ball ball-size ball-size-1' onClick={ this.handleSelectSize.bind(this, 1) }></div>
           <div className='ball ball-size ball-size-2' onClick={ this.handleSelectSize.bind(this, 2) }></div>
           <div className='ball ball-size ball-size-3' onClick={ this.handleSelectSize.bind(this, 3) }></div>

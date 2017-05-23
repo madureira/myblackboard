@@ -132,6 +132,15 @@
     transition: width 0.3s, height 0.3s !important;
     cursor: default;
 
+    .flip-circle {
+      -moz-transform: scaleX(-1);
+      -webkit-transform: scaleX(-1);
+      -o-transform: scaleX(-1);
+      transform: scaleX(-1);
+      -ms-filter: fliph; /*IE*/
+      filter: fliph; /*IE*/
+    }
+
     .menu-circle {
       width: 100%;
       height: 100%;
@@ -158,7 +167,7 @@
         }
 
         &:active {
-          background-color: #4d90fe;
+          background-color: #000;
         }
       }
 
@@ -212,6 +221,11 @@
         &:hover {
           width: 35px;
           height: 35px;
+        }
+        &:active {
+          width: 25px;
+          height: 25px;
+          border: 5px solid gray;
         }
       }
 
