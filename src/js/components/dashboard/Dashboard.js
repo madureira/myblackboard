@@ -8,7 +8,7 @@ class Dashboard extends Component {
     super(props);
     this.mouse = { x: 0, y: 0 };
     this.state = {
-      currentTool: 'brush',
+      tool: 'brush',
       menu: {
         show: false,
         x: 0,
@@ -45,16 +45,21 @@ class Dashboard extends Component {
     this.setState({ menu: { show: false, x: menu.x, y: menu.y } });
   }
 
-  handleSelectOption(option) {
+  handleSelectToolOptions(tool, size, color) {
     let menu = this.state.menu;
-    this.setState({ currentTool: option, menu: { show: false, x: menu.x, y: menu.y } });
+    this.setState({ tool: tool, size: size, color: color, menu: { show: false, x: menu.x, y: menu.y } });
   }
 
   render() {
     return (
       <section id='app-content'>
-        <Board hideMenu={ this.hideMenu.bind(this) } currentTool={ this.state.currentTool }/>
-        <Menu { ...this.state.menu } selectTool={ this.handleSelectOption.bind(this) }/>
+        <Board
+          hideMenu={ this.hideMenu.bind(this) }
+          tool={ this.state.tool }
+          size={ this.state.size }
+          color={ this.state.color }
+        />
+        <Menu { ...this.state.menu } selectTool={ this.handleSelectToolOptions.bind(this) }/>
       </section>
     )
   }

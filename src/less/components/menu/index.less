@@ -47,17 +47,13 @@
     display: inline-block;
     text-align: center;
     cursor: pointer;
+  }
 
-    &:hover {
-      background-color: #40403F;
+  .button-active {
+    background-color: #40403F;
 
-      span {
-        color: #989999;
-      }
-
-      span:active {
-        color: #fff;
-      }
+    span {
+      color: #989999 !important;
     }
   }
 
@@ -90,8 +86,14 @@
 
   .menu-center {
     position: absolute;
-    top: 62px;
-    left: 62px;
+    width: 50%;
+    height: 50%;
+    overflow: hidden;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
     width: 75px;
     height: 75px;
     border-radius: 50%;
@@ -101,18 +103,151 @@
     -moz-box-shadow: 0 0 20px 0px #a0a0a0;
     box-shadow: 0 0 20px 0px #a0a0a0;
 
+    transition: width 0.3s, height 0.3s;
+
     .menu-logo {
-      position: relative;
-      margin: 12px auto;
-      width: 51px;
-      height: 51px;
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      overflow: auto;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      width: 40px;
+      height: 40px;
       background: #F2DB4E;
       border-radius: 50%;
       color: #fff;
       text-align: center;
-      line-height: 50px;
-      font-size: 30px;
+      line-height: 40px;
+      font-size: 20px;
     }
   }
+
+  .submenu-open {
+    width: 120px;
+    height: 120px;
+    transition: width 0.3s, height 0.3s !important;
+    cursor: default;
+
+    .menu-circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+
+      .ball {
+        position: absolute;
+        overflow: hidden;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      .ball-size {
+        background-color: #676767;
+
+        &:hover {
+          background-color: #fff;
+        }
+
+        &:active {
+          background-color: #4d90fe;
+        }
+      }
+
+      .ball-size-1 {
+        width: 8px;
+        height: 8px;
+        top: 41%;
+        right: 50%;
+        &:hover { width: 10px; height: 10px; }
+      }
+      .ball-size-2 {
+        width: 12px;
+        height: 12px;
+        top: 0%;
+        right: 65%;
+        &:hover { width: 14px; height: 14px; }
+      }
+      .ball-size-3 {
+        width: 16px;
+        height: 16px;
+        top: -45%;
+        right: 50%;
+        &:hover { width: 18px; height: 18px; }
+      }
+      .ball-size-4 {
+        width: 20px;
+        height: 20px;
+        top: -65%;
+        left: 10%;
+        &:hover { width: 22px; height: 22px; }
+      }
+      .ball-size-5 {
+        width: 25px;
+        height: 25px;
+        top: -30%;
+        left: 60%;
+        &:hover { width: 27px; height: 27px; }
+      }
+      .ball-size-6 {
+        width: 30px;
+        height: 30px;
+        top: 40%;
+        left: 55%;
+        &:hover { width: 33px; height: 33px; }
+      }
+
+      .ball-color {
+        width: 30px;
+        height: 30px;
+
+        &:hover {
+          width: 35px;
+          height: 35px;
+        }
+      }
+
+      .ball-color-1 {
+        top: -65%;
+        left: 0;
+        background-color: white;
+      }
+      .ball-color-2 {
+        top: -30%;
+        right: -60%;
+        background-color: red;
+      }
+      .ball-color-3 {
+        top: 35%;
+        left: 60%;
+        background-color: blue;
+      }
+      .ball-color-4 {
+        top: 65%;
+        left: 0%;
+        background-color: green;
+      }
+      .ball-color-5 {
+        top: 35%;
+        right: 60%;
+        background-color: yellow;
+      }
+      .ball-color-6 {
+        top: -30%;
+        right: 60%;
+        background-color: black;
+      }
+    }
+  }
+
+
 
 }

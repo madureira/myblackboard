@@ -6,52 +6,41 @@ class Board extends Component {
     super(props);
     this.inMemCanvas = null;
     this.inMemCtx = null;
-    this.lineWidth = 5;
+    this.canvas = null;
+    this.ctx = null;
+
     this.lineJoin = 'round';
     this.lineCap = 'round';
-    this.strokeStyle = '#fff';
     this.keyBrush = 'b';
     this.keyEraser = 'e';
     this.keyIncreaseBrush = '+';
     this.keyDecreaseBrush = '-';
     this.state = {
-      currentTool: this.props.currentTool
+      tool: 'brush',
+      size: 2,
+      color: 'white'
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ currentTool: nextProps.currentTool });
+    if (!nextProps.tool || !nextProps.size || !nextProps.color) return;
+
+    this.setState({ tool: nextProps.tool, size: nextProps.size, color: nextProps.color }, () => {
+      this.updateBrush();
+    });
   }
 
   componentDidMount() {
+    this.canvas = document.getElementById('canvas');
+    this.ctx    = this.canvas.getContext('2d');
+
     this.createInMemoryCanvas();
-    let canvas = document.getElementById('canvas');
-    let ctx    = canvas.getContext('2d');
 
     window.addEventListener('resize', () => {
-      this.onResizeBoard(canvas, ctx);
+      this.onResizeBoard();
     }, false);
 
-    this.onResizeBoard(canvas, ctx);
-    this.keyboardEvents(ctx);
-  }
-
-  keyboardEvents(ctx) {
-    document.onkeypress = (evt) => {
-      evt = evt || window.event;
-      let charCode = evt.keyCode || evt.which;
-      let charStr = String.fromCharCode(charCode);
-
-      if (charStr === this.keyIncreaseBrush) {
-        this.lineWidth += 2;
-        this.updateBrush(this.inMemCtx);
-        this.updateBrush(ctx);
-      } else if (charStr === this.keyDecreaseBrush) {
-        this.lineWidth -= 2;
-        this.updateBrush(this.inMemCtx);
-        this.updateBrush(ctx);
-      }
-    };
+    this.onResizeBoard();
   }
 
   createInMemoryCanvas() {
@@ -62,67 +51,67 @@ class Board extends Component {
     this.inMemCanvas.height = height;
     this.inMemCtx = this.inMemCanvas.getContext('2d');
 
-    this.updateBrush(this.inMemCtx);
+    this.updateBrush();
   }
 
-  onResizeBoard(canvas, ctx) {
+  onResizeBoard() {
     let { width, height } = this.getScreenSize();
 
-    canvas.width = width;
-    canvas.height = height;
-    ctx.drawImage(this.inMemCanvas, 0, 0);
-    this.updateBrush(ctx);
+    this.canvas.width = width;
+    this.canvas.height = height;
+    this.ctx.drawImage(this.inMemCanvas, 0, 0);
+    this.updateBrush();
 
     let mouse = {x: 0, y: 0};
   	let lastMouse = {x: 0, y: 0};
 
-  	canvas.addEventListener('mousemove', function(e) {
+  	this.canvas.addEventListener('mousemove', function(e) {
   		lastMouse.x = mouse.x;
   		lastMouse.y = mouse.y;
   		mouse.x = e.pageX - this.offsetLeft;
   		mouse.y = e.pageY - this.offsetTop;
   	}, false);
 
-  	canvas.addEventListener('mousedown', (e) => {
+  	this.canvas.addEventListener('mousedown', (e) => {
       if (e.button === 0) {
         this.props.hideMenu();
-  		  canvas.addEventListener('mousemove', onPaint, false);
+  		  this.canvas.addEventListener('mousemove', onPaint, false);
       }
   	}, false);
 
-  	canvas.addEventListener('mouseup', (e) => {
+  	this.canvas.addEventListener('mouseup', (e) => {
       if (e.button === 0) {
-  		  canvas.removeEventListener('mousemove', onPaint, false);
+  		  this.canvas.removeEventListener('mousemove', onPaint, false);
       }
   	}, false);
 
   	let onPaint = () => {
-      this.draw(ctx, lastMouse, mouse);
+      this.draw(lastMouse, mouse);
   	};
   }
 
-  draw(ctx, lastMouse, mouse) {
-    ctx.beginPath();
+  draw(lastMouse, mouse) {
+    this.ctx.beginPath();
     this.inMemCtx.beginPath();
-    if (this.state.currentTool === 'brush') {
-      ctx.globalCompositeOperation='source-over';
-      ctx.moveTo(lastMouse.x, lastMouse.y);
-      ctx.lineTo(mouse.x, mouse.y);
+    if (this.state.tool === 'brush') {
+      this.ctx.globalCompositeOperation='source-over';
+      this.ctx.moveTo(lastMouse.x, lastMouse.y);
+      this.ctx.lineTo(mouse.x, mouse.y);
 
       this.inMemCtx.globalCompositeOperation='source-over';
       this.inMemCtx.moveTo(lastMouse.x, lastMouse.y);
       this.inMemCtx.lineTo(mouse.x, mouse.y);
-    } else if (this.state.currentTool === 'eraser') {
-      ctx.globalCompositeOperation='destination-out';
-      ctx.moveTo(lastMouse.x, lastMouse.y);
-      ctx.lineTo(mouse.x, mouse.y);
+    } else if (this.state.tool === 'eraser') {
+      this.ctx.globalCompositeOperation='destination-out';
+      this.ctx.moveTo(lastMouse.x, lastMouse.y);
+      this.ctx.lineTo(mouse.x, mouse.y);
 
       this.inMemCtx.globalCompositeOperation='destination-out';
       this.inMemCtx.moveTo(lastMouse.x, lastMouse.y);
       this.inMemCtx.lineTo(mouse.x, mouse.y);
     }
-    ctx.closePath();
-    ctx.stroke();
+    this.ctx.closePath();
+    this.ctx.stroke();
     this.inMemCtx.closePath();
     this.inMemCtx.stroke();
   }
@@ -135,11 +124,45 @@ class Board extends Component {
     };
   }
 
-  updateBrush(context) {
-    context.lineWidth   = (this.lineWidth > 1 ? this.lineWidth : 1);
-    context.lineJoin    = this.lineJoin;
-    context.lineCap     = this.lineCap;
-    context.strokeStyle = this.strokeStyle;
+  updateBrush() {
+    let size  = this.state.size;
+    let tool    = this.state.tool;
+
+    if (tool === 'brush') {
+      if (size === 2) {
+        size = 4;
+      } else if (size === 3) {
+        size = 10;
+      } else if (size === 4) {
+        size = 15;
+      } else if (size === 5) {
+        size = 25;
+      } else if (size === 6) {
+        size = 35;
+      }
+    } else if (tool === 'eraser') {
+      if (size === 2) {
+        size = 8;
+      } else if (size === 3) {
+        size = 15;
+      } else if (size === 4) {
+        size = 30;
+      } else if (size === 5) {
+        size = 45;
+      } else if (size === 6) {
+        size = 60;
+      }
+    }
+
+    this.ctx.lineWidth   = size;
+    this.ctx.lineJoin    = this.lineJoin;
+    this.ctx.lineCap     = this.lineCap;
+    this.ctx.strokeStyle = this.state.color;
+
+    this.inMemCtx.lineWidth   = size;
+    this.inMemCtx.lineJoin    = this.lineJoin;
+    this.inMemCtx.lineCap     = this.lineCap;
+    this.inMemCtx.strokeStyle = this.state.color;
   }
 
   render() {
