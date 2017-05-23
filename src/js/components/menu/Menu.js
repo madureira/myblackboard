@@ -21,8 +21,8 @@ class Menu extends Component {
     if (button && button !== 'config') {
       this.setState({ showSubmenu: true, tool: button });
     } else if (button === 'config') {
-      this.setState({ showSubmenu: false, tool: null });
-    } else if (!this.state.tool && !button) {
+      this.setState({ showSubmenu: false, tool: button });
+    } else if (this.state.tool === 'config' && !button) {
       this.setState({ showSubmenu: false });
     } else {
       this.setState({ showSubmenu: true });
