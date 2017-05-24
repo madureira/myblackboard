@@ -16,7 +16,7 @@ let mainWindow;
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    //icon: `${__dirname}/dist/images/gamepad.png`,
+    icon: `${__dirname}/dist/images/favicon-128x128.png`,
     width: 1280,
     height: 768,
     minWidth: 1280,

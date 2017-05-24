@@ -138,7 +138,7 @@ class Menu extends Component {
           { this.renderSizeOptions() }
           { this.renderColorOptions() }
           <div className='menu-logo noselect'>
-            <i className='fa fa-paint-brush noselect'/>
+            <span className='logo'/>
           </div>
         </div>
       </div>

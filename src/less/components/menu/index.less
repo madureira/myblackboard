@@ -107,22 +107,28 @@
 
     .menu-logo {
       position: absolute;
-      width: 50%;
-      height: 50%;
-      overflow: auto;
+      overflow: hidden;
       margin: auto;
       top: 0;
       left: 0;
       bottom: 0;
       right: 0;
-      width: 40px;
-      height: 40px;
-      background: #F2DB4E;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
-      color: #fff;
-      text-align: center;
-      line-height: 40px;
-      font-size: 20px;
+
+      .logo {
+        position: absolute;
+        background-image: url(../images/menu-logo.png);
+        background-repeat: no-repeat;
+        background-position: -6px -6px;
+        overflow: hidden;
+        margin: auto;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
     }
   }
 
@@ -196,7 +202,7 @@
         width: 20px;
         height: 20px;
         top: -65%;
-        left: 10%;
+        left: 5%;
         &:hover { width: 22px; height: 22px; }
       }
       .ball-size-5 {
@@ -209,7 +215,7 @@
       .ball-size-6 {
         width: 30px;
         height: 30px;
-        top: 40%;
+        top: 45%;
         left: 55%;
         &:hover { width: 33px; height: 33px; }
       }
@@ -230,13 +236,13 @@
       }
 
       .ball-color-1 {
-        top: -65%;
+        top: -70%;
         left: 0;
         background-color: white;
       }
       .ball-color-2 {
         top: -30%;
-        right: -60%;
+        right: -65%;
         background-color: red;
       }
       .ball-color-3 {
@@ -245,7 +251,7 @@
         background-color: blue;
       }
       .ball-color-4 {
-        top: 65%;
+        top: 70%;
         left: 0%;
         background-color: green;
       }
@@ -256,7 +262,7 @@
       }
       .ball-color-6 {
         top: -30%;
-        right: 60%;
+        right: 65%;
         background-color: black;
       }
     }
