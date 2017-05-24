@@ -1,7 +1,5 @@
 /node_modules
 /dist
 /packager
-/blackboard-linux-armv7l
-/blackboard-linux-ia32
-/blackboard-linux-x64
+/release
 npm-debug.log

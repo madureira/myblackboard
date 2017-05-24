@@ -18,6 +18,7 @@ var assign          = require('lodash/assignWith');
 var fs              = require('fs');
 
 var SETTINGS = {
+  RELEASE_DIR: 'release',
   BUILD_DIR: 'dist',
   IMAGES_DIR: 'src/images',
   MAIN_JS: 'src/js/app.js',
@@ -43,12 +44,11 @@ function compile(watch) {
   bundler.transform('babelify', { presets: ['es2015', 'react'] });
 
   function bundle() {
-
     return bundler.bundle()
       .on('error', gutil.log.bind(gutil, 'Browserify Error'))
       .pipe(source('bundle.min.js'))
       .pipe(buffer())
-      //.pipe(uglify()) // uglify js
+      .pipe(uglify())
       .pipe(gulp.dest(SETTINGS.BUILD_DIR + '/js'));
   }
 
@@ -74,7 +74,7 @@ gulp.task('vendors', function () {
   stream.bundle()
   .pipe(source('vendors.min.js'))
   .pipe(buffer())
-  //.pipe(uglify())
+  .pipe(uglify())
   .pipe(gulp.dest(SETTINGS.BUILD_DIR + '/js'));
 
   return stream;
@@ -121,8 +121,7 @@ gulp.task('watch:html', function() {
 });
 
 gulp.task('copy:images', function () {
-  return gulp.src(SETTINGS.IMAGES_DIR + '/**/*.*')
-    .pipe(gulp.dest(SETTINGS.BUILD_DIR + '/images/'));
+  return gulp.src(SETTINGS.IMAGES_DIR + '/**/*.*').pipe(gulp.dest(SETTINGS.BUILD_DIR + '/images/'));
 });
 
 gulp.task('fontawesome', function() {
@@ -130,7 +129,15 @@ gulp.task('fontawesome', function() {
     .pipe(gulp.dest(SETTINGS.BUILD_DIR + '/fonts'));
 });
 
-gulp.task('open:blackboard', function() {
+gulp.task('clean:release', function () {
+  return gulp.src(SETTINGS.RELEASE_DIR, { read: false }).pipe(clean());
+});
+
+gulp.task('packager:clean', function() {
+  return gulp.src('./packager', { read: false }).pipe(clean());
+});
+
+gulp.task('open:blackboard', ['clean:release'], function() {
   process.env.NODE_ENV = 'development';
   return gulp.src('./**/**')
     .pipe(exec('electron .', {
@@ -145,7 +152,7 @@ gulp.task('open:blackboard', function() {
     }));
 });
 
-gulp.task('build', ['clean'], function() {
+function startBuild() {
   gulp.start('vendors');
   gulp.start('build:js');
   gulp.start('build:less');
@@ -153,10 +160,18 @@ gulp.task('build', ['clean'], function() {
   gulp.start('build:html');
   gulp.start('copy:images');
   gulp.start('fontawesome');
+}
+
+gulp.task('env-prod', function() {
+  return process.env.NODE_ENV = 'production';
 });
 
-gulp.task('packager:clean', function() {
-  return gulp.src('./packager', { read: false }).pipe(clean());
+gulp.task('build', ['clean'], function() {
+  startBuild();
+});
+
+gulp.task('build-prod', ['env-prod'], function() {
+  startBuild();
 });
 
 gulp.task('packager:copy', ['packager:clean'], function() {
@@ -191,6 +206,5 @@ gulp.task('packer', ['generate:packer-files', 'copy:packer-files'], function() {
       stdout: true // default = true, false means don't write stdout
     }));
 });
-
 
 gulp.task('watch', ['watch:js', 'watch:less', 'watch:vendors-less', 'watch:html', 'open:blackboard']);

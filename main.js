@@ -19,7 +19,7 @@ function createWindow () {
     icon: `${__dirname}/dist/images/favicon-128x128.png`,
     width: 1280,
     height: 768,
-    minWidth: 1280,
+    minWidth: 1024,
     minHeight: 768,
     darkTheme: true
   });
@@ -31,7 +31,7 @@ function createWindow () {
 
   // Open the DevTools.
   if (process.env.NODE_ENV == 'development') {
-    mainWindow.webContents.openDevTools()
+    //mainWindow.webContents.openDevTools();
   }
 
   // Emitted when the window is closed.
@@ -40,7 +40,9 @@ function createWindow () {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null;
-  })
+  });
+
+  mainWindow.maximize();
 }
 
 // This method will be called when Electron has finished
