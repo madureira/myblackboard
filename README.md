@@ -3,10 +3,10 @@
 
 A tool used to draw and sketch some ideas.
 
-![Caption for the picture.](http://blackboard.madureira.me/images/screenshot-blackboard.png)
+![Caption for the picture.](http://myblackboard.madureira.me/images/screenshot-blackboard.png)
 
 
-[Live Demo](http://blackboard.madureira.me)
+[Live Demo](http://myblackboard.madureira.me)
 
 To start drawing is really simple, just click and handle the left button of your mouse and drag on the screen.
 
