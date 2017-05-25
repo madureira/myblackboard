@@ -3,7 +3,7 @@
 
 A tool used to draw and sketch some ideas.
 
-![Caption for the picture.](http://myblackboard.madureira.me/images/screenshot-blackboard.png)
+![Caption for the picture.](http://myblackboard.madureira.me/images/screenshot-myblackboard.png)
 
 
 [Live Demo](http://myblackboard.madureira.me)
