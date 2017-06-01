@@ -63,31 +63,31 @@ class Board extends Component {
     this.updateBrush();
 
     let mouse = {x: 0, y: 0};
-  	let lastMouse = {x: 0, y: 0};
+    let lastMouse = {x: 0, y: 0};
 
-  	this.canvas.addEventListener('mousemove', function(e) {
-  		lastMouse.x = mouse.x;
-  		lastMouse.y = mouse.y;
-  		mouse.x = e.pageX - this.offsetLeft;
-  		mouse.y = e.pageY - this.offsetTop;
-  	}, false);
+    this.canvas.addEventListener('mousemove', function(e) {
+      lastMouse.x = mouse.x;
+      lastMouse.y = mouse.y;
+      mouse.x = e.pageX - this.offsetLeft;
+      mouse.y = e.pageY - this.offsetTop;
+    }, false);
 
-  	this.canvas.addEventListener('mousedown', (e) => {
+    this.canvas.addEventListener('mousedown', (e) => {
       if (e.button === 0) {
         this.props.hideMenu();
-  		  this.canvas.addEventListener('mousemove', onPaint, false);
+        this.canvas.addEventListener('mousemove', onPaint, false);
       }
-  	}, false);
+    }, false);
 
-  	this.canvas.addEventListener('mouseup', (e) => {
+    this.canvas.addEventListener('mouseup', (e) => {
       if (e.button === 0) {
-  		  this.canvas.removeEventListener('mousemove', onPaint, false);
+        this.canvas.removeEventListener('mousemove', onPaint, false);
       }
-  	}, false);
+    }, false);
 
-  	let onPaint = () => {
+    let onPaint = () => {
       this.draw(lastMouse, mouse);
-  	};
+    };
   }
 
   draw(lastMouse, mouse) {
