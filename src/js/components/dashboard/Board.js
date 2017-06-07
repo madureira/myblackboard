@@ -59,6 +59,9 @@ class Board extends Component {
   }
 
   onResizeBoard() {
+    let _this             = this;
+    let mouse             = { x: 0, y: 0 };
+    let lastMouse         = { x: 0, y: 0 };
     let { width, height } = this.getScreenSize();
 
     this.canvas.width = width;
@@ -66,8 +69,9 @@ class Board extends Component {
     this.ctx.drawImage(this.inMemCanvas, 0, 0);
     this.updateBrush();
 
-    let mouse = {x: 0, y: 0};
-    let lastMouse = {x: 0, y: 0};
+    let onPaint = () => {
+      this.draw(lastMouse, mouse);
+    };
 
     this.canvas.addEventListener('mousemove', function(e) {
       lastMouse.x = mouse.x;
@@ -89,9 +93,23 @@ class Board extends Component {
       }
     }, false);
 
-    let onPaint = () => {
-      this.draw(lastMouse, mouse);
-    };
+    this.canvas.addEventListener('touchstart', function(e) {
+      if (e.touches.length > 1) {
+        _this.props.showMenu();
+        return false;
+      }
+
+      lastMouse.x = mouse.x;
+      lastMouse.y = mouse.y;
+      mouse.x = e.pageX - this.offsetLeft;
+      mouse.y = e.pageY - this.offsetTop;
+      _this.props.hideMenu();
+      _this.canvas.addEventListener('mousemove', onPaint, false);
+    }, false);
+
+    this.canvas.addEventListener('touchend', function(e) {
+      _this.canvas.removeEventListener('mousemove', onPaint, false);
+    }, false);
   }
 
   draw(lastMouse, mouse) {

@@ -61,6 +61,7 @@ class Dashboard extends Component {
       <section id='app-content'>
         <Board
           hideMenu={ this.hideMenu.bind(this) }
+          showMenu={ this.showMenu.bind(this) }
           tool={ this.state.tool }
           brushSize={ this.state.brushSize }
           eraserSize={ this.state.eraserSize }
