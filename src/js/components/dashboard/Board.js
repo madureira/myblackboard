@@ -41,10 +41,10 @@ class Board extends Component {
     this.createInMemoryCanvas();
 
     window.addEventListener('resize', () => {
-      this.onResizeBoard();
+      this.initBoard();
     }, false);
 
-    this.onResizeBoard();
+    this.initBoard();
   }
 
   createInMemoryCanvas() {
@@ -58,7 +58,7 @@ class Board extends Component {
     this.updateBrush();
   }
 
-  onResizeBoard() {
+  initBoard() {
     let _this             = this;
     let mouse             = { x: 0, y: 0 };
     let lastMouse         = { x: 0, y: 0 };
@@ -98,7 +98,7 @@ class Board extends Component {
     }, false);
 
     this.canvas.addEventListener('touchstart', function(e) {
-      if (e.targetTouches.length == 1) {
+      if (e.targetTouches.length === 1) {
         setPosition(e.targetTouches[0], this);
         _this.props.hideMenu();
         _this.canvas.addEventListener('touchmove', onPaint, false);
@@ -107,15 +107,13 @@ class Board extends Component {
 
     this.canvas.addEventListener('touchmove', function(e) {
       e.preventDefault();
-      if (e.targetTouches.length == 1) {
+      if (e.targetTouches.length === 1) {
         setPosition(e.targetTouches[0], this);
       }
     }, false);
 
     this.canvas.addEventListener('touchleave', (e) => {
-      if (e.touches.length === 1) {
-        this.canvas.removeEventListener('touchmove', onPaint, false);
-      }
+      this.canvas.removeEventListener('touchmove', onPaint, false);
     }, false);
   }
 

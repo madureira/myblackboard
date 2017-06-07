@@ -21,15 +21,18 @@ class Dashboard extends Component {
     let _this = this;
     let canvas = document.getElementById('canvas');
 
+    let setPosition = (screen, context) => {
+      _this.mouse.x = (screen.pageX - context.offsetLeft);
+      _this.mouse.y = (screen.pageY - context.offsetTop) - 100;
+    }
+
     canvas.addEventListener('mousemove', function(e) {
-      _this.mouse.x = (e.pageX - this.offsetLeft);
-      _this.mouse.y = (e.pageY - this.offsetTop) - 100;
+      setPosition(e, this);
     }, false);
 
     canvas.addEventListener('touchstart', function(e) {
-      if (e.touches.length > 1) {
-        _this.mouse.x = (e.pageX - this.offsetLeft);
-        _this.mouse.y = (e.pageY - this.offsetTop) - 100;
+      if (e.targetTouches.length > 1) {
+        setPosition(e.targetTouches[0], this);
         _this.showMenu();
       }
     }, false);

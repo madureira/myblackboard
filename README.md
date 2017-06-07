@@ -22,6 +22,7 @@ To open the brush selection menu, click on **right button** of your mouse.
 - Erase
 - Change brush size
 - Change brush color
+- Support touch screen devices
 
 ## TODO
 
