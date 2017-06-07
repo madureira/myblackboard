@@ -73,11 +73,15 @@ class Board extends Component {
       this.draw(lastMouse, mouse);
     };
 
-    this.canvas.addEventListener('mousemove', function(e) {
+    let setPosition = (screen, context) => {
       lastMouse.x = mouse.x;
       lastMouse.y = mouse.y;
-      mouse.x = e.pageX - this.offsetLeft;
-      mouse.y = e.pageY - this.offsetTop;
+      mouse.x = screen.pageX - context.offsetLeft;
+      mouse.y = screen.pageY - context.offsetTop;
+    }
+
+    this.canvas.addEventListener('mousemove', function(e) {
+      setPosition(e, this);
     }, false);
 
     this.canvas.addEventListener('mousedown', (e) => {
@@ -94,21 +98,24 @@ class Board extends Component {
     }, false);
 
     this.canvas.addEventListener('touchstart', function(e) {
-      if (e.touches.length > 1) {
-        _this.props.showMenu();
-        return false;
+      if (e.targetTouches.length == 1) {
+        setPosition(e.targetTouches[0], this);
+        _this.props.hideMenu();
+        _this.canvas.addEventListener('touchmove', onPaint, false);
       }
-
-      lastMouse.x = mouse.x;
-      lastMouse.y = mouse.y;
-      mouse.x = e.pageX - this.offsetLeft;
-      mouse.y = e.pageY - this.offsetTop;
-      _this.props.hideMenu();
-      _this.canvas.addEventListener('mousemove', onPaint, false);
     }, false);
 
-    this.canvas.addEventListener('touchend', function(e) {
-      _this.canvas.removeEventListener('mousemove', onPaint, false);
+    this.canvas.addEventListener('touchmove', function(e) {
+      e.preventDefault();
+      if (e.targetTouches.length == 1) {
+        setPosition(e.targetTouches[0], this);
+      }
+    }, false);
+
+    this.canvas.addEventListener('touchleave', (e) => {
+      if (e.touches.length === 1) {
+        this.canvas.removeEventListener('touchmove', onPaint, false);
+      }
     }, false);
   }
 

@@ -18,11 +18,20 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    const _this = this;
+    let _this = this;
+    let canvas = document.getElementById('canvas');
 
-    document.getElementById('canvas').addEventListener('mousemove', function(e) {
+    canvas.addEventListener('mousemove', function(e) {
       _this.mouse.x = (e.pageX - this.offsetLeft);
       _this.mouse.y = (e.pageY - this.offsetTop) - 100;
+    }, false);
+
+    canvas.addEventListener('touchstart', function(e) {
+      if (e.touches.length > 1) {
+        _this.mouse.x = (e.pageX - this.offsetLeft);
+        _this.mouse.y = (e.pageY - this.offsetTop) - 100;
+        _this.showMenu();
+      }
     }, false);
 
     window.oncontextmenu = () => {
@@ -61,7 +70,6 @@ class Dashboard extends Component {
       <section id='app-content'>
         <Board
           hideMenu={ this.hideMenu.bind(this) }
-          showMenu={ this.showMenu.bind(this) }
           tool={ this.state.tool }
           brushSize={ this.state.brushSize }
           eraserSize={ this.state.eraserSize }
