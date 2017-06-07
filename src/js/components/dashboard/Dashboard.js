@@ -45,9 +45,15 @@ class Dashboard extends Component {
     this.setState({ menu: { show: false, x: menu.x, y: menu.y } });
   }
 
-  handleSelectToolOptions(tool, size, color) {
+  handleSelectToolOptions(tool, brushSize, eraserSize, color) {
     let menu = this.state.menu;
-    this.setState({ tool: tool, size: size, color: color, menu: { show: false, x: menu.x, y: menu.y } });
+    this.setState({
+      tool: tool,
+      brushSize: brushSize,
+      eraserSize: eraserSize,
+      color: color,
+      menu: { show: false, x: menu.x, y: menu.y }
+    });
   }
 
   render() {
@@ -56,7 +62,8 @@ class Dashboard extends Component {
         <Board
           hideMenu={ this.hideMenu.bind(this) }
           tool={ this.state.tool }
-          size={ this.state.size }
+          brushSize={ this.state.brushSize }
+          eraserSize={ this.state.eraserSize }
           color={ this.state.color }
         />
         <Menu { ...this.state.menu } selectTool={ this.handleSelectToolOptions.bind(this) }/>

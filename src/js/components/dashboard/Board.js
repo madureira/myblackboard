@@ -17,15 +17,19 @@ class Board extends Component {
     this.keyDecreaseBrush = '-';
     this.state = {
       tool: 'brush',
-      size: 2,
+      brushSize: 2,
+      eraserSize: 30,
       color: 'white'
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.tool || !nextProps.size || !nextProps.color) return;
-
-    this.setState({ tool: nextProps.tool, size: nextProps.size, color: nextProps.color }, () => {
+    this.setState({
+      tool: nextProps.tool,
+      brushSize: nextProps.brushSize,
+      eraserSize: nextProps.eraserSize,
+      color: nextProps.color
+    }, () => {
       this.updateBrush();
     });
   }
@@ -125,32 +129,38 @@ class Board extends Component {
   }
 
   updateBrush() {
-    let size  = this.state.size;
-    let tool    = this.state.tool;
+    let brushSize   = this.state.brushSize;
+    let eraserSize  = this.state.eraserSize;
+    let tool        = this.state.tool;
+    let size        = 4;
 
     if (tool === 'brush') {
-      if (size === 2) {
+      if (brushSize === 2) {
         size = 4;
-      } else if (size === 3) {
+      } else if (brushSize === 3) {
         size = 10;
-      } else if (size === 4) {
+      } else if (brushSize === 4) {
         size = 15;
-      } else if (size === 5) {
+      } else if (brushSize === 5) {
         size = 25;
-      } else if (size === 6) {
+      } else if (brushSize === 6) {
         size = 35;
+      } else {
+        size = brushSize;
       }
     } else if (tool === 'eraser') {
-      if (size === 2) {
+      if (eraserSize === 2) {
         size = 8;
-      } else if (size === 3) {
+      } else if (eraserSize === 3) {
         size = 15;
-      } else if (size === 4) {
+      } else if (eraserSize === 4) {
         size = 30;
-      } else if (size === 5) {
+      } else if (eraserSize === 5) {
         size = 45;
-      } else if (size === 6) {
+      } else if (eraserSize === 6) {
         size = 60;
+      } else {
+        size = eraserSize;
       }
     }
 

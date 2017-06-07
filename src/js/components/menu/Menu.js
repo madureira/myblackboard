@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 
 class Menu extends Component {
 
+  static brushColors() {
+    return ['white', 'red', 'blue', 'green', 'yellow', 'black'];
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       showSubmenu: false,
       tool: 'brush',
-      size: 1,
+      brushSize: 2,
+      eraserSize: 4,
       color: 'white'
     };
-  }
-
-  handleClickConfig() {
-    console.log('config');
   }
 
   onMouseOverButton(button, event) {
@@ -34,15 +35,44 @@ class Menu extends Component {
     this.setState({ showSubmenu: false });
   }
 
+  handleClickConfig() {
+  }
+
+  handleClickBrush() {
+    let state = this.state;
+    this.setState({ tool: 'brush' }, () => {
+      this.props.selectTool('brush', state.brushSize, state.eraserSize, state.color);
+    });
+  }
+
+  handleClickEraser() {
+    let state = this.state;
+    this.setState({ tool: 'eraser' }, () => {
+      this.props.selectTool('eraser', state.brushSize, state.eraserSize, state.color);
+    });
+  }
+
   handleSelectSize(size) {
-    this.setState({ size: size }, () => {
-      this.props.selectTool(this.state.tool, size, this.state.color);
+    let state = this.state;
+    let option = {
+      brush: state.brushSize,
+      eraser: state.eraserSize
+    };
+
+    if (state.tool === 'brush') {
+      option.brush = size;
+    } else {
+      option.eraser = size;
+    }
+
+    this.setState({ brushSize: option.brush, eraserSize: option.eraser }, () => {
+      this.props.selectTool(state.tool, option.brush, option.eraser, state.color);
     });
   }
 
   handleSelectColor(color) {
     this.setState({ color: color }, () => {
-      this.props.selectTool('brush', this.state.size, color);
+      this.props.selectTool('brush', this.state.brushSize, this.state.eraserSize, color);
     });
   }
 
@@ -70,12 +100,10 @@ class Menu extends Component {
   }
 
   renderColorOptions() {
-    let colors = ['white', 'red', 'blue', 'green', 'yellow', 'black'];
-
     return (
       <div className={ 'menu-circle' + (this.state.tool === 'color' ? '' : ' hide') }>
         {
-          colors.map((color, i) => {
+          Menu.brushColors().map((color, i) => {
             return (
               <div
                 key={ i }
@@ -107,12 +135,22 @@ class Menu extends Component {
             <ul>
               {
                 options.map((tool, i) => {
-                  let clickEvent = (tool.name === 'config' ? this.handleClickConfig.bind(this) : ()=>{});
+                  let clickEvent = () => {};
+
+                  if (tool.name === 'config') {
+                    clickEvent = this.handleClickConfig.bind(this);
+                  } else if (tool.name === 'brush') {
+                    clickEvent = this.handleClickBrush.bind(this);
+                  } else if (tool.name === 'eraser') {
+                    clickEvent = this.handleClickEraser.bind(this);
+                  }
+
                   return (
                     <li key={ i } className={ (this.state.tool === tool.name ? 'button-active' : '') }>
-                      <span onClick={ clickEvent }
+                      <span
                         onMouseOver={ this.onMouseOverButton.bind(this, tool.name) }
                         onMouseOut={ this.onMouseOutButton.bind(this) }
+                        onClick={ clickEvent }
                       >
                         <i className={ `fa fa-${tool.icon} fa-2x` } />
                       </span>
