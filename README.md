@@ -31,3 +31,37 @@ To open the brush selection menu, click on **right button** of your mouse.
 - Implement *print image*
 - Implement *drag image*
 - Implement *straight line support*
+
+---
+
+## Development
+If you want to fork this project and run it in development mode, see the instructions below.
+
+#### Run desktop mode:
+```sh
+$ npm start
+```
+
+#### Run desktop mode and watch for modifications and auto compile.
+```sh
+$ npm run watch
+```
+
+#### Build the project:
+```sh
+$ npm run build
+```
+
+#### Build the project with minified assets:
+```sh
+$ npm run build:prod
+```
+
+#### Build the desktop app:
+```sh
+$ npm run packager
+```
+To use the desktop app, navigate to `myblackboard/release/myblackboard-SO-plataform/` and run the executable file.
+
+#### Browser mode:
+If you want to open the app on your browser, you can build the project and get the html file inside `myblackboard/dist/`
