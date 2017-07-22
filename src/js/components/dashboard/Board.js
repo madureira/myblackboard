@@ -11,10 +11,6 @@ class Board extends Component {
 
     this.lineJoin = 'round';
     this.lineCap = 'round';
-    this.keyBrush = 'b';
-    this.keyEraser = 'e';
-    this.keyIncreaseBrush = '+';
-    this.keyDecreaseBrush = '-';
     this.state = {
       tool: 'brush',
       brushSize: 2,
@@ -39,11 +35,7 @@ class Board extends Component {
     this.ctx    = this.canvas.getContext('2d');
 
     this.createInMemoryCanvas();
-
-    window.addEventListener('resize', () => {
-      this.initBoard();
-    }, false);
-
+    window.addEventListener('resize', () => this.initBoard(), false);
     this.initBoard();
   }
 
@@ -69,9 +61,7 @@ class Board extends Component {
     this.ctx.drawImage(this.inMemCanvas, 0, 0);
     this.updateBrush();
 
-    let onPaint = () => {
-      this.draw(lastMouse, mouse);
-    };
+    let onPaint = () => this.draw(lastMouse, mouse);
 
     let setPosition = (screen, context) => {
       lastMouse.x = mouse.x;
@@ -121,26 +111,22 @@ class Board extends Component {
     this.ctx.beginPath();
     this.inMemCtx.beginPath();
     if (this.state.tool === 'brush') {
-      this.ctx.globalCompositeOperation='source-over';
-      this.ctx.moveTo(lastMouse.x, lastMouse.y);
-      this.ctx.lineTo(mouse.x, mouse.y);
-
-      this.inMemCtx.globalCompositeOperation='source-over';
-      this.inMemCtx.moveTo(lastMouse.x, lastMouse.y);
-      this.inMemCtx.lineTo(mouse.x, mouse.y);
+      this.moveLine(lastMouse, mouse, 'source-over', this.ctx);
+      this.moveLine(lastMouse, mouse, 'source-over', this.inMemCtx);
     } else if (this.state.tool === 'eraser') {
-      this.ctx.globalCompositeOperation='destination-out';
-      this.ctx.moveTo(lastMouse.x, lastMouse.y);
-      this.ctx.lineTo(mouse.x, mouse.y);
-
-      this.inMemCtx.globalCompositeOperation='destination-out';
-      this.inMemCtx.moveTo(lastMouse.x, lastMouse.y);
-      this.inMemCtx.lineTo(mouse.x, mouse.y);
+      this.moveLine(lastMouse, mouse, 'destination-out', this.ctx);
+      this.moveLine(lastMouse, mouse, 'destination-out', this.inMemCtx);
     }
     this.ctx.closePath();
     this.ctx.stroke();
     this.inMemCtx.closePath();
     this.inMemCtx.stroke();
+  }
+
+  moveLine(lastMouse, mouse, operation, ctx) {
+    ctx.globalCompositeOperation = operation;
+    ctx.moveTo(lastMouse.x, lastMouse.y);
+    ctx.lineTo(mouse.x, mouse.y);
   }
 
   getScreenSize() {
@@ -187,15 +173,15 @@ class Board extends Component {
       }
     }
 
-    this.ctx.lineWidth   = size;
-    this.ctx.lineJoin    = this.lineJoin;
-    this.ctx.lineCap     = this.lineCap;
-    this.ctx.strokeStyle = this.state.color;
+    this.setBrushOptions(size, this.lineJoin, this.lineCap, this.state.color, this.ctx);
+    this.setBrushOptions(size, this.lineJoin, this.lineCap, this.state.color, this.inMemCtx);
+  }
 
-    this.inMemCtx.lineWidth   = size;
-    this.inMemCtx.lineJoin    = this.lineJoin;
-    this.inMemCtx.lineCap     = this.lineCap;
-    this.inMemCtx.strokeStyle = this.state.color;
+  setBrushOptions(size, lineJoin, lineCap, color, ctx) {
+    ctx.lineWidth   = size;
+    ctx.lineJoin    = lineJoin;
+    ctx.lineCap     = lineCap;
+    ctx.strokeStyle = color;
   }
 
   render() {

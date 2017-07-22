@@ -36,6 +36,7 @@ class Menu extends Component {
   }
 
   handleClickConfig() {
+    // TODO: Implement configuration
   }
 
   handleClickBrush() {
@@ -53,8 +54,8 @@ class Menu extends Component {
   }
 
   handleSelectSize(size) {
-    let state = this.state;
-    let option = {
+    let state   = this.state;
+    let option  = {
       brush: state.brushSize,
       eraser: state.eraserSize
     };
@@ -78,7 +79,7 @@ class Menu extends Component {
 
   renderSizeOptions() {
     let _this = this;
-    let tool = this.state.tool;
+    let tool  = this.state.tool;
     let clazz = ((tool === 'brush' || tool === 'eraser') ? '' : 'hide');
     clazz += (tool === 'brush' ? 'flip-circle' : '');
 
@@ -87,8 +88,7 @@ class Menu extends Component {
         {
           [1,2,3,4,5,6].map((number, i) => {
             return (
-              <div
-                key={ i }
+              <div key={ i }
                 className={ `ball ball-size ball-size-${number}` }
                 onClick={ _this.handleSelectSize.bind(_this, number) }
               />
@@ -105,8 +105,7 @@ class Menu extends Component {
         {
           Menu.brushColors().map((color, i) => {
             return (
-              <div
-                key={ i }
+              <div key={ i }
                 className={ `ball ball-color ball-color-${i+1}` }
                 onClick={ this.handleSelectColor.bind(this, color) }
               />
