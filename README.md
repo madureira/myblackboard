@@ -3,7 +3,7 @@
 
 A tool used to explore your creativity, draw and sketch some ideas.
 
-![Caption for the picture.](http://myblackboard.madureira.me/images/screenshot-myblackboard.png)
+![Caption for the picture.](https://raw.githubusercontent.com/madureira/myblackboard/master/src/images/screenshot-myblackboard.png)
 
 
 [Live Demo](http://myblackboard.madureira.me)
