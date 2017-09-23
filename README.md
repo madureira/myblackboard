@@ -6,7 +6,7 @@ A tool used to explore your creativity, draw and sketch some ideas.
 ![Caption for the picture.](https://raw.githubusercontent.com/madureira/myblackboard/master/src/images/screenshot-myblackboard.png)
 
 
-[Live Demo](http://myblackboard.madureira.me)
+[Live Demo](https://madureira.github.io/myblackboard/)
 
 To start drawing is really simple, just click and handle the **left button** of your mouse and drag on the screen.
 
